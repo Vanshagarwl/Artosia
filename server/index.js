@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const paintingRoutes = require('./routes/paintingRoutes');
+const authRoutes = require('./routes/authRoutes');
 const os = require('os');
 const morgan = require('morgan');
 
@@ -20,6 +21,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/paintings', paintingRoutes);
+app.use('/api/auth', authRoutes);
 
 const PORT = process.env.PORT || 5000;
 
