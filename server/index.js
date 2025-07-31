@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const paintingRoutes = require('./routes/paintingRoutes');
+const os = require('os');
 
 const app = express();
 app.use(cors());
@@ -19,4 +20,22 @@ app.get('/', (req, res) => {
 app.use('/api/paintings', paintingRoutes);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+function getLocalIP() {
+    const interfaces = os.networkInterfaces();
+    for (const name of Object.keys(interfaces)) {
+        for (const iface of interfaces[name]) {
+            if (iface.family === 'IPv4' && !iface.internal) {
+                return iface.address;
+            }
+        }
+    }
+    return 'localhost';
+}
+
+app.listen(PORT, '0.0.0.0', () => {
+    const localIP = getLocalIP();
+    console.log(`Server running on:`);
+    console.log(`- Local:   http://localhost:${PORT}`);
+    console.log(`- Network: http://${localIP}:${PORT}`);
+});
