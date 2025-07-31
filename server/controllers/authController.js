@@ -23,9 +23,13 @@ exports.login = async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    const user = await User.findOne({ username });
+    // Try to find user by username or email
+    const user = await User.findOne({
+      $or: [{ username }, { email: username }]
+    });
+
     if (!user || user.password !== password) {
-      return res.status(400).json({ error: 'Invalid username or password' });
+      return res.status(400).json({ error: 'Invalid username/email or password' });
     }
 
     if (!process.env.JWT_SECRET || !process.env.JWT_EXPIRES_IN) {
