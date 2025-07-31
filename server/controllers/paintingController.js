@@ -18,3 +18,16 @@ exports.getPaintings = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+exports.deletePainting = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedPainting = await Painting.findByIdAndDelete(id);
+    if (!deletedPainting) {
+      return res.status(404).json({ error: 'Painting not found' });
+    }
+    res.status(200).json({ message: 'Painting deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
