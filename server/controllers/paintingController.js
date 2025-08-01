@@ -2,7 +2,10 @@ const Painting = require('../models/Painting');
 
 exports.addPainting = async (req, res) => {
   try {
-    const painting = new Painting(req.body);
+    const painting = new Painting({
+      ...req.body,
+      postedBy: req.user.username
+    });
     await painting.save();
     res.status(201).json({ message: 'Painting added successfully', painting });
   } catch (error) {
