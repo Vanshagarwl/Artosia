@@ -8,7 +8,8 @@ const paintingSchema = new mongoose.Schema({
   description: { type: String, required: true },
   size: { type: String, required: true },
   artistName: { type: String, required: true },
-  category: { type: String, required: true }
+  category: { type: String, required: true },
+  postedBy: { type: String, required: true }
 });
 
 module.exports = mongoose.model('Painting', paintingSchema);
