@@ -24,11 +24,14 @@ exports.getPaintings = async (req, res) => {
 
 exports.deletePainting = async (req, res) => {
   try {
-    const { id } = req.params;
-    const deletedPainting = await Painting.findByIdAndDelete(id);
-    if (!deletedPainting) {
+    const painting = await Painting.findById(req.params.id);
+    if (!painting) {
       return res.status(404).json({ error: 'Painting not found' });
     }
+    if (painting.postedBy !== req.user.username) {
+      return res.status(403).json({ error: 'You can only delete your own paintings' });
+    }
+    await painting.deleteOne();
     res.status(200).json({ message: 'Painting deleted successfully' });
   } catch (error) {
     res.status(500).json({ error: error.message });
