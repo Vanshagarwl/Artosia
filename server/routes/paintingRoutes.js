@@ -6,6 +6,6 @@ const auth = require('../middleware/auth');
 router.post('/', auth, addPainting);
 router.get('/', getPaintings);
 router.delete('/:id', auth, deletePainting);
-router.put('/:id', updatePainting);
+router.put('/:id', auth, updatePainting);
 
 module.exports = router;
