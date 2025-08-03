@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artosia API Documentation</title>
+    <link rel="icon" href="artosia.svg" type="image/svg+xml">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1><img src="artosia.svg" alt="Artosia" class="logo-icon"> Artosia API</h1>
+            <p class="hero-subtitle">Professional Art Marketplace API Documentation</p>
+            <div class="status-badges">
+                <span class="badge badge-success">
+                    <i class="fas fa-check-circle"></i>
+                    Status: Online
+                </span>
+            </div>
+        </div>
+
+        <!-- Authentication Section -->
+        <div class="section" id="auth">
+            <div class="section-header">
+                <div class="section-icon" style="background: var(--primary-color);">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div>
+                    <h2 class="section-title">Authentication Endpoints</h2>
+                    <p class="group-description">Secure user registration and authentication system</p>
+                </div>
+            </div>
+
+            <div class="endpoint-group">
+                <div class="group-header">
+                    <div class="group-title">/api/auth</div>
+                    <p class="group-description">User authentication and authorization endpoints</p>
+                </div>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method method-post">POST</span>
+                        <code class="endpoint-path">/api/auth/signup</code>
+                        <span class="auth-badge auth-public">
+                            <i class="fas fa-globe"></i>
+                            Public
+                        </span>
+                    </div>
+                    <div class="endpoint-description">
+                        Register a new user account in the Artosia marketplace. Creates a new user with encrypted password and returns user information. Both username and email must be unique.
+                    </div>
+                    <div class="endpoint-details">
+                        <div class="detail-section">
+                            <div class="detail-title">Request Body</div>
+                            <div class="detail-content">
+                                {<br>
+                                &nbsp;&nbsp;"username": "string (required, unique)",<br>
+                                &nbsp;&nbsp;"name": "string (required)",<br>
+                                &nbsp;&nbsp;"mobile": "string (optional)",<br>
+                                &nbsp;&nbsp;"email": "string (required, unique)",<br>
+                                &nbsp;&nbsp;"password": "string (required)"<br>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method method-post">POST</span>
+                        <code class="endpoint-path">/api/auth/login</code>
+                        <span class="auth-badge auth-public">
+                            <i class="fas fa-globe"></i>
+                            Public
+                        </span>
+                    </div>
+                    <div class="endpoint-description">
+                        Authenticate user credentials and receive a JWT token for accessing protected endpoints. You can login using either username or email.
+                    </div>
+                    <div class="endpoint-details">
+                        <div class="detail-section">
+                            <div class="detail-title">Request Body</div>
+                            <div class="detail-content">
+                                {<br>
+                                &nbsp;&nbsp;"username": "string (required - can be username or email)",<br>
+                                &nbsp;&nbsp;"password": "string (required)"<br>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Paintings Section -->
+        <div class="section" id="paintings">
+            <div class="section-header">
+                <div class="section-icon" style="background: var(--warning-color);">
+                    <i class="fas fa-images"></i>
+                </div>
+                <div>
+                    <h2 class="section-title">Painting Management</h2>
+                    <p class="group-description">Complete CRUD operations for artwork marketplace</p>
+                </div>
+            </div>
+
+            <div class="endpoint-group">
+                <div class="group-header">
+                    <div class="group-title">/api/paintings</div>
+                    <p class="group-description">Manage paintings in the art marketplace</p>
+                </div>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method method-get">GET</span>
+                        <code class="endpoint-path">/api/paintings</code>
+                        <span class="auth-badge auth-public">
+                            <i class="fas fa-globe"></i>
+                            Public
+                        </span>
+                    </div>
+                    <div class="endpoint-description">
+                        Retrieve all paintings available in the marketplace. Returns a list of all artworks with complete details including artist and posting information.
+                    </div>
+                    <div class="endpoint-details">
+                        <div class="detail-section">
+                            <div class="detail-title">Response Fields</div>
+                            <div class="detail-content">
+                                Array of objects containing:<br>
+                                - title, imageUrl, price, paperType<br>
+                                - description, size, artistName<br>
+                                - category, postedBy (username)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method method-post">POST</span>
+                        <code class="endpoint-path">/api/paintings</code>
+                        <span class="auth-badge auth-required">
+                            <i class="fas fa-lock"></i>
+                            Authentication Required
+                        </span>
+                    </div>
+                    <div class="endpoint-description">
+                        Add a new painting to the marketplace. Automatically associates the painting with the authenticated user (postedBy field is auto-filled with username).
+                    </div>
+                    <div class="endpoint-details">
+                        <div class="detail-section">
+                            <div class="detail-title">Request Body</div>
+                            <div class="detail-content">
+                                {<br>
+                                &nbsp;&nbsp;"title": "string (required)",<br>
+                                &nbsp;&nbsp;"imageUrl": "string (required)",<br>
+                                &nbsp;&nbsp;"price": "number (required)",<br>
+                                &nbsp;&nbsp;"paperType": "string (required)",<br>
+                                &nbsp;&nbsp;"description": "string (required)",<br>
+                                &nbsp;&nbsp;"size": "string (required)",<br>
+                                &nbsp;&nbsp;"artistName": "string (required)",<br>
+                                &nbsp;&nbsp;"category": "string (required)"<br>
+                                }
+                            </div>
+                        </div>
+                        <div class="detail-section">
+                            <div class="detail-title">Auto-Generated Fields</div>
+                            <div class="detail-content">postedBy: Automatically set to authenticated user's username</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method method-put">PUT</span>
+                        <code class="endpoint-path">/api/paintings/:id</code>
+                        <span class="auth-badge auth-required">
+                            <i class="fas fa-lock"></i>
+                            Owner Only
+                        </span>
+                    </div>
+                    <div class="endpoint-description">
+                        Update an existing painting. Only the original poster can modify their artwork details. The postedBy field cannot be changed.
+                    </div>
+                    <div class="endpoint-details">
+                        <div class="detail-section">
+                            <div class="detail-title">URL Parameters</div>
+                            <div class="detail-content">id: Painting ObjectId (MongoDB)</div>
+                        </div>
+                        <div class="detail-section">
+                            <div class="detail-title">Request Body (Optional Fields)</div>
+                            <div class="detail-content">
+                                {<br>
+                                &nbsp;&nbsp;"title": "string",<br>
+                                &nbsp;&nbsp;"imageUrl": "string",<br>
+                                &nbsp;&nbsp;"price": "number",<br>
+                                &nbsp;&nbsp;"paperType": "string",<br>
+                                &nbsp;&nbsp;"description": "string",<br>
+                                &nbsp;&nbsp;"size": "string",<br>
+                                &nbsp;&nbsp;"artistName": "string",<br>
+                                &nbsp;&nbsp;"category": "string"<br>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method method-delete">DELETE</span>
+                        <code class="endpoint-path">/api/paintings/:id</code>
+                        <span class="auth-badge auth-required">
+                            <i class="fas fa-lock"></i>
+                            Owner Only
+                        </span>
+                    </div>
+                    <div class="endpoint-description">
+                        Permanently remove a painting from the marketplace. Only the original poster can delete their artwork.
+                    </div>
+                    <div class="endpoint-details">
+                        <div class="detail-section">
+                            <div class="detail-title">URL Parameters</div>
+                            <div class="detail-content">id: Painting ObjectId (MongoDB)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Documentation Section -->
+        <div class="docs-section" id="docs">
+            <h3 class="docs-title">
+                <i class="fas fa-book"></i>
+                Authentication Guide
+            </h3>
+            <div class="docs-content">
+                <p><strong>For protected endpoints marked with "Authentication Required":</strong></p>
+                
+                <div class="code-block">
+# Include JWT token in Authorization header
+Authorization: Bearer &lt;your-jwt-token&gt;
+
+# Example using curl
+curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
+     -X GET http://localhost:5000/api/paintings</div>
+
+                <p><strong>How to obtain a JWT token:</strong></p>
+                <ol style="margin: 1rem 0; padding-left: 2rem;">
+                    <li>Register a new account via <code>/api/auth/register</code></li>
+                    <li>Login with your credentials via <code>/api/auth/login</code></li>
+                    <li>Use the returned token in the Authorization header</li>
+                </ol>
+                
+                <p><strong>Security Notes:</strong></p>
+                <ul style="margin: 1rem 0; padding-left: 2rem;">
+                    <li>Tokens expire after 24 hours for security</li>
+                    <li>Users can only modify their own paintings</li>
+                    <li>All passwords are encrypted using bcrypt</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 Artosia API. Built with Express.js, MongoDB & JWT Authentication.</p>
+        <p>Made with <i class="fas fa-heart" style="color: #e74c3c;"></i> for the art community</p>
+    </footer>
+</body>
+</html>
